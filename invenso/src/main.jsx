@@ -13,6 +13,7 @@ import SignUp from './pages/SignUp.jsx'
 import LogIn from './pages/LogIn.jsx'
 import UserPanel from './pages/UserPanel.jsx'
 import UserProfile from './pages/UserProfile.jsx'
+import UserInputForm from './pages/UserInputForm.jsx'
 
 const router = createBrowserRouter(
   [
@@ -59,7 +60,11 @@ const router = createBrowserRouter(
         {
           path: "/userprofile",
           element: <UserProfile/>
-        }
+        },
+        {
+          path: "/:equipmentType/:equipmentId",
+          element: <UserInputForm />
+        },
       ]
     }
   ]
