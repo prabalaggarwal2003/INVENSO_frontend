@@ -1,6 +1,16 @@
 import React, {useState} from 'react'
-
+// model Room {
+//   roomId     Int      @id @default(autoincrement())
+//   location   String
+//   roomNo     Int
+//   isCreated  DateTime @default(now())
+//   isModified DateTime @default(now())
+//   isActive   Boolean
+//   status     Status
+// }
 function Room() {
+  
+
     const [formData, setFormData] = useState({
         roomNo: "",
         roomType: "Select",
@@ -21,7 +31,7 @@ function Room() {
             location: "Select",
           }
         )
-          };
+        };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

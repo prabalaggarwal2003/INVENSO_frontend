@@ -1,20 +1,26 @@
 import React, {useState} from 'react'
+import { useEffect } from 'react';
+import axios from 'axios';
 
 function EquipmentType() {
     const [formData, setFormData] = useState({
-        equipmentTypeID: "",
-        equipmentName: "",
-        quantity: "",
-        type: "Select",
+        equipmentTypeId: [],
+        Types: "Select",
+        Quantity: "",
+        Title: "",
+        Description : "",
+        isActive : true
       });
 
       const handleRefresh = () => {
         setFormData(
           {
-            equipmentTypeID: "",
-            equipmentName: "",
-            quantity: "",
-            type: "Select",
+            equipmentTypeId: [],
+            Types: "Select",
+            Quantity: "",
+            Title: "",
+            Description : "",
+            isActive : true
           }
         )
           };
@@ -29,6 +35,13 @@ function EquipmentType() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const { equipmentTypeId, Types, Quantity, Title ,Description , isActive} = formData;
+    axios.post('http://localhost:3000/equipmentType', {equipmentTypeId , Types , Quantity , Title, Description , isActive})
+      .then(response => {
+        onTaskCreated(response.data);
+        setFormData('');
+      })
+      .catch(error => console.error('Error creating Equipment Type:', error));
   };
 
   return (
@@ -41,17 +54,17 @@ function EquipmentType() {
           <br />
           <label className="form-label">
             Equipment Type ID:
-            <input type="text" name="equipmentTypeID" value={formData.equipmentTypeID} onChange={handleChange} className="form-input" required />
+            <input type="text" name="equipmentTypeId" value={formData.equipmentTypeId} onChange={handleChange} className="form-input" />
           </label>
           <br />
           <label className="form-label">
             Equipment Name:
-            <input type="text" name="equipmentName" value={formData.equipmentName} onChange={handleChange} className="form-input" required />
+            <input type="text" name="Title" value={formData.Title} onChange={handleChange} className="form-input" required />
           </label>
           <br />
           <label className="form-label">
             Type:
-            <select name="type" value={formData.type} onChange={handleChange} className="form-input-drop">
+            <select name="Types" value={formData.Types} onChange={handleChange} className="form-input-drop">
               <option value="select">Select</option>
               <option value="electronics">Electronics</option>
               <option value="furniture">Furniture</option>
@@ -61,11 +74,18 @@ function EquipmentType() {
           <br />
           <label className="form-label">
             Quantity:
-            <input type="text" name="quantity" value={formData.quantity} onChange={handleChange} className="form-input" required />
+            <input type="text" name="Quantity" value={formData.Quantity} onChange={handleChange} className="form-input" required />
           </label>
           <br />
           <br />
+          <label className="form-label">
+            Description:
+            <input type="text" name="Description" value={formData.Description} onChange={handleChange} className="form-input" required />
+          </label>
+          
           <button type="submit" className="form-button flex justify-center text-xl border-2 border-black rounded-lg p-2 cursor-pointer">Submit</button>
+        
+
         </form>
       </div>
       <div className="flex justify-center text-xl">
