@@ -3,23 +3,33 @@ import QRGenerator from "./QRGenerator";
 
 export default function Electronics() {
   const [formData, setFormData] = useState({
-    equipmentId: "",
-    equipmentType: "Select",
-    inWarranty: false,
-    purchaseDate: "",
+    equipmentId: "1",
+    Location: "New Building",
+    equipmentType: "Fan",
+    warranty: "String",
+    purchaseDate: "2020-01-01T00:00:00.000Z",
+    issueHistory: "String",
     condition: "New",
-    location: "",
+    qrCode: "/String",
+    isCreated: "2025-05-03T18:51:32.336Z",
+    isModified: "2025-05-03T18:51:32.336Z",
+    isActive: true
   });
 
   const handleRefresh = () => {
     setFormData(
       {
-      equipmentId: "",
-      equipmentType: "",
-      inWarranty: false,
-      purchaseDate: "",
-      condition: "New",
-      location: "",
+        equipmentId: "1",
+        Location: "New Building",
+        equipmentType: "Fan",
+        warranty: "String",
+        purchaseDate: "2020-01-01T00:00:00.000Z",
+        issueHistory: "String",
+        condition: "New",
+        qrCode: "/String",
+        isCreated: "2025-05-03T18:51:32.336Z",
+        isModified: "2025-05-03T18:51:32.336Z",
+        isActive: true
       }
     ),
     setShowQR(false)
@@ -28,17 +38,31 @@ export default function Electronics() {
   const [showQR, setShowQR] = useState(false); 
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type } = e.target;
+  
+    let parsedValue = value;
+    if (type === "number") {
+      parsedValue = parseInt(value, 10);
+      if (isNaN(parsedValue)) parsedValue = 0;
+    }
+  
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: parsedValue,
     });
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    setShowQR(true);
-  };
+            e.preventDefault();
+            axios.post('http://localhost:3000/assetManagement/equipment', formData)
+              .then(response => {
+                setMessage("Submitted successfully!");
+              })
+              .catch(error => {
+                console.error('Error fetching data:', error);
+                setMessage("Submission failed.");
+              });
+          };
 
   return (
     <div >
@@ -65,17 +89,17 @@ export default function Electronics() {
           <div className="form-radio-container">
             <span className="form-label">Warranty:</span>
             <label className="form-radio">
-              <input type="radio" name="inWarranty" value="Yes" checked={formData.inWarranty === "Yes"} onChange={handleChange} />
-              Yes
+            <input type="radio" name="warranty" value={true} checked={formData.warranty === true} onChange={() => setFormData({...formData, isActive: true})} />
+            True
             </label>
             <label className="form-radio">
-              <input type="radio" name="inWarranty" value="No" checked={formData.inWarranty === "No"} onChange={handleChange} />
-              No
+            <input type="radio" name="warranty" value={false} checked={formData.warranty === false} onChange={() => setFormData({...formData, isActive: false})} />
+            False
             </label>
           </div>
           <label className="form-label">
             Purchase Date:
-            <input type="date" name="purchaseDate" value={formData.purchaseDate} onChange={handleChange} className="form-input" required />
+            <input type="datetime-local" name="purchaseDate" value={formData.purchaseDate} onChange={handleChange} className="form-input" required />
           </label>
           <br />
           <label className="form-label">
@@ -89,7 +113,7 @@ export default function Electronics() {
           <br />
           <label className="form-label">
             Location:
-            <input type="text" name="location" value={formData.location} onChange={handleChange} className="form-input" required />
+            <input type="text" name="Location" value={formData.Location} onChange={handleChange} className="form-input" required />
           </label>
           <br />
           <br />
