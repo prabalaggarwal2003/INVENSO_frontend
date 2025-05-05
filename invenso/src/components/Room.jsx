@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
-import axios from 'axios';
+
 function Room() {
+  
+
     const [formData, setFormData] = useState({
         roomId: 0,
         roomType: "Select",
@@ -22,7 +24,6 @@ function Room() {
           }
         )
           };
-          const [message, setMessage] = useState("");
 
           const handleChange = (e) => {
             const { name, value, type } = e.target;
