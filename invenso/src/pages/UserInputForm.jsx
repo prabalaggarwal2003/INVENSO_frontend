@@ -1,99 +1,3 @@
-
-// import axios from "axios";
-// import { useState, useEffect } from "react";
-// import { useParams } from "react-router-dom";
-
-// function UserInputForm() {
-//   const [message, setMessage] = useState("");
-//   const [isLoading, setIsLoading] = useState(true);
-//   const { equipmentType, equipmentId } = useParams();
-//   const [newIssue, setNewIssue] = useState("");
-//   const [equipmentData, setEquipmentData] = useState(null);
-
-//   // Fetch existing equipment data on load
-//   useEffect(() => {
-//     axios.get(`http://localhost:3000/assetManagement/equipment/${equipmentId}`)
-//       .then((response) => {
-//         setEquipmentData(response.data);
-//         setIsLoading(false);
-//       })
-//       .catch((error) => {
-//         console.error("Failed to fetch equipment data:", error);
-//         setMessage("Failed to load equipment data.");
-//         setIsLoading(false);
-//       });
-//   }, [equipmentId]);
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     if (!newIssue.trim()) return;
-
-//     const timestamp = new Date().toISOString();
-//     const updatedHistory = equipmentData.issueHistory 
-//       ? `${equipmentData.issueHistory}\n\n[${timestamp}]: ${newIssue}`
-//       : `[${timestamp}]: ${newIssue}`;
-
-//     axios.put(
-//       `http://localhost:3000/assetManagement/equipment/${equipmentId}`,
-//       { ...equipmentData, issueHistory: updatedHistory }
-//     )
-//       .then(() => {
-//         setMessage("Issue Reported !");
-//         setNewIssue("");
-//         // Refresh data to show the update
-//         return axios.get(`http://localhost:3000/assetManagement/equipment/${equipmentId}`);
-//       })
-//       .then((response) => setEquipmentData(response.data))
-//       .catch((error) => {
-//         console.error("Submission failed:", error);
-//         setMessage("Failed to report issue.");
-//       });
-//   };
-
-//   if (isLoading) return <div>Loading equipment data...</div>;
-//   if (!equipmentData) return <div>Equipment not found.</div>;
-
-//   return (
-//     <div className="flex flex-col items-center mt-20">
-//       <h2 className="text-2xl mb-4">
-//         Submit Report for {equipmentType} (ID: {equipmentId})
-//       </h2>
-      
-//       {/* Current Issue History (Read-only) */}
-//       <div className="mb-6 w-full max-w-2xl">
-//         <h3 className="font-semibold mb-2">Existing Issue History:</h3>
-//         <pre className="bg-gray-100 p-4 rounded whitespace-pre-wrap">
-//           {equipmentData.issueHistory || "No issues recorded yet."}
-//         </pre>
-//       </div>
-
-//       {/* Form to Add New Issues */}
-//       <form onSubmit={handleSubmit} className="w-full max-w-2xl">
-//         <textarea
-//           value={newIssue}
-//           onChange={(e) => setNewIssue(e.target.value)}
-//           placeholder="Describe the issue..."
-//           className="border p-2 rounded w-full mb-4 h-32"
-//           required
-//         />
-//         <button
-//           type="submit"
-//           className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-//         >
-//           Submit Report
-//         </button>
-//       </form>
-
-//       {message && (
-//         <div className={`mt-4 ${message.includes("Failed") ? "text-red-600" : "text-green-600"}`}>
-//           {message}
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default UserInputForm;
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -104,7 +8,8 @@ function UserInputForm() {
   const [issueDesc, setIssueDesc] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [username, setUsername] = useState("");
+  const [enrollmentNo, setenrollmentNo] = useState("");
   // Fetch equipment data
   useEffect(() => {
     const fetchEquipment = async () => {
@@ -121,8 +26,25 @@ function UserInputForm() {
     fetchEquipment();
   }, [equipmentId]);
 
+  const canSubmit = () => {
+    const last = localStorage.getItem("lastSubmissionTime");
+    const now = Date.now();
+    const limit = 10 * 60 * 1000; // 10 minutes in milliseconds
+
+    if (last && now - Number(last) < limit) {
+      const remaining = Math.ceil((limit - (now - Number(last))) / 60000);
+      alert(`You can submit a new report in ${remaining} minute(s).`);
+      return false;
+    }
+
+    localStorage.setItem("lastSubmissionTime", now.toString());
+    return true;
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!canSubmit()) return;
     if (!issueDesc.trim() || !equipment || isSubmitting) return;
 
     setIsSubmitting(true);
@@ -131,16 +53,45 @@ function UserInputForm() {
 
     try {
       // 1. Create new issue in issues table
+      // await axios.post("http://localhost:3000/assetManagement/issue", {
+      //   username: username,
+      //   enrollmentNo: enrollmentNo,
+      //   Location: equipment.Location,
+      //   equipmentType: equipment.equipmentType,
+      //   warranty: equipment.warranty,
+      //   purchaseDate: equipment.purchaseDate,
+      //   issueHistory: formattedIssue,
+      //   condition: equipment.condition,
+      //   isActive: true,
+      //   Status: "PENDING"
+      // });
+      console.log("Sending issue payload:", {
+  username,
+  enrollmentNo,
+  Location: equipment.Location,
+  equipmentType: equipment.equipmentType,
+  warranty: equipment.warranty,
+  purchaseDate: equipment.purchaseDate,
+  issueHistory: formattedIssue,
+  condition: equipment.condition,
+  qrCode: equipment.qrCode,
+  isActive: true,
+  Status: "PENDING"
+});
+
       await axios.post("http://localhost:3000/assetManagement/issue", {
-        Location: equipment.Location,
-        equipmentType: equipment.equipmentType,
-        warranty: equipment.warranty,
-        purchaseDate: equipment.purchaseDate,
-        issueHistory: formattedIssue,
-        condition: equipment.condition,
-        qrCode: equipment.qrCode,
-        isActive: true,
-      });
+  username: username,
+  enrollmentNo: enrollmentNo,
+  Location: equipment.Location,
+  equipmentType: equipment.equipmentType,
+  warranty: equipment.warranty,
+  purchaseDate: equipment.purchaseDate,
+  issueHistory: formattedIssue,
+  condition: equipment.condition,
+  isActive: true,
+  Status: "PENDING",
+  // 🚫 Do NOT send equipmentId if it's not in the model
+});
 
       // 2. Update equipment's issueHistory using PUT
       const updatedEquipment = {
@@ -193,6 +144,29 @@ function UserInputForm() {
         <div className="border rounded-lg p-4 bg-white shadow">
           <h2 className="font-semibold text-lg mb-3">Log New Issue</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
+            <label className="form-label">
+            Username:
+            <input
+              type="text"
+              name="username"
+              value={username}
+              onChange={(e)=>{setUsername(e.target.value)}}
+              className="form-input"
+              required
+            />
+          </label>
+          <br />
+          <label className="form-label">
+            EnrollmentNo:
+            <input
+              type="text"
+              name="enrollmentNo"
+              value={enrollmentNo}
+              onChange={(e)=>{setenrollmentNo(e.target.value)}}
+              className="form-input"
+              required
+            />
+          </label>
             <textarea
               value={issueDesc}
               onChange={(e) => setIssueDesc(e.target.value)}

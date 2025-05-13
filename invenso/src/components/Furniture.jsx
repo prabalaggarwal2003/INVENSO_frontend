@@ -2,14 +2,14 @@ import { useState } from "react";
 import QRGenerator from "./QRGenerator";
 import axios from "axios";
 
-export default function Electronics() {
+export default function Furniture() {
   const [message, setMessage] = useState("");
   const [showQR, setShowQR] = useState(false);
 
   const [formData, setFormData] = useState({
     equipmentId: 0,
     Location: "New Building",
-    equipmentType: "Fan",
+    equipmentType: "Chair",
     warranty: "true",
     purchaseDate: "",
     issueHistory: "",
@@ -22,7 +22,7 @@ export default function Electronics() {
     setFormData({
       equipmentId: 0,
       Location: "New Building",
-      equipmentType: "Fan",
+      equipmentType: "Chair",
       warranty: "true",
       purchaseDate: "",
       issueHistory: "",
@@ -89,7 +89,7 @@ export default function Electronics() {
         <br />
         <br />
         <form onSubmit={handleSubmit} className="form-container">
-          <h2 className="form-title text-xl text-center">Electronics Form</h2>
+          <h2 className="form-title text-xl text-center">Furniture Form</h2>
           <br />
           <label className="form-label">
             Equipment ID:
