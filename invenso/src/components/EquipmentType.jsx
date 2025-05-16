@@ -61,7 +61,7 @@ function EquipmentType({ initialData, onSubmit, onCancel, isUpdate = false }) {
         if (isUpdate) {
             onSubmit(formData);
         } else {
-            axios.post('http://localhost:3000/assetManagement/equipmentType', formData)
+            axios.post('https://invenso-backend.onrender.com/assetManagement/equipmentType', formData)
                 .then(response => {
                     setMessage("Submitted successfully!");
                     handleRefresh();

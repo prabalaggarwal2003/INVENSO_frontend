@@ -72,7 +72,7 @@ export default function Furniture() {
     };
 
     axios
-      .post("http://localhost:3000/assetManagement/equipment", updatedFormData)
+      .post("https://invenso-backend.onrender.com/assetManagement/equipment", updatedFormData)
       .then((response) => {
         setMessage("Submitted successfully!");
         setShowQR(true);

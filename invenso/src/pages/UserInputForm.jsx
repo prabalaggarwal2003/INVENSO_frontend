@@ -15,7 +15,7 @@ function UserInputForm() {
     const fetchEquipment = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3000/assetManagement/equipment/${equipmentId}`
+          `https://invenso-backend.onrender.com/assetManagement/equipment/${equipmentId}`
         );
         setEquipment(res.data);
       } catch (err) {
@@ -79,7 +79,7 @@ function UserInputForm() {
   Status: "PENDING"
 });
 
-      await axios.post("http://localhost:3000/assetManagement/issue", {
+      await axios.post("https://invenso-backend.onrender.com/assetManagement/issue", {
   username: username,
   enrollmentNo: enrollmentNo,
   Location: equipment.Location,
@@ -102,13 +102,13 @@ function UserInputForm() {
       };
 
       await axios.put(
-        `http://localhost:3000/assetManagement/equipment/${equipmentId}`,
+        `https://invenso-backend.onrender.com/assetManagement/equipment/${equipmentId}`,
         updatedEquipment
       );
 
       // Refresh data
       const res = await axios.get(
-        `http://localhost:3000/assetManagement/equipment/${equipmentId}`
+        `https://invenso-backend.onrender.com/assetManagement/equipment/${equipmentId}`
       );
       setEquipment(res.data);
       setIssueDesc("");

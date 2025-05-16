@@ -21,7 +21,7 @@ function Equipmenttype() {
     const fetchEquipmentTypeData = () => {
         const token = localStorage.getItem('admin_token');
         
-        axios.get('http://localhost:3000/assetManagement/equipmentType', {
+        axios.get('https://invenso-backend.onrender.com/assetManagement/equipmentType', {
             headers: {
                 'x-admin-token': token,
             },
@@ -37,7 +37,7 @@ function Equipmenttype() {
     const deleteEquipmentType = async (equipmentTypeId) => {
         const token = localStorage.getItem('admin_token');
         try {
-            await axios.delete(`http://localhost:3000/assetManagement/equipmentType/${equipmentTypeId}`, {
+            await axios.delete(`https://invenso-backend.onrender.com/assetManagement/equipmentType/${equipmentTypeId}`, {
                 headers: {
                     'x-admin-token': token,
                 },
@@ -63,7 +63,7 @@ function Equipmenttype() {
     const handleUpdateSubmit = async (updatedData) => {
         const token = localStorage.getItem('admin_token');
         try {
-            await axios.put(`http://localhost:3000/assetManagement/equipmentType/${updatedData.equipmentTypeId}`, updatedData, {
+            await axios.put(`https://invenso-backend.onrender.com/assetManagement/equipmentType/${updatedData.equipmentTypeId}`, updatedData, {
                 headers: {
                     'x-admin-token': token,
                 },

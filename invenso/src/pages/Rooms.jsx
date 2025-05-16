@@ -22,7 +22,7 @@ function Rooms() {
     const fetchRoomData = () => {
         const token = localStorage.getItem('admin_token');
         
-        axios.get('http://localhost:3000/room', {
+        axios.get('https://invenso-backend.onrender.com/assetManagement/room', {
             headers: {
                 'x-admin-token': token,
             },
@@ -39,7 +39,7 @@ function Rooms() {
     const deleteRoom = async (roomId) => {
         const token = localStorage.getItem('admin_token');
         try {
-            await axios.delete(`http://localhost:3000/room/${roomId}`, {
+            await axios.delete(`https://invenso-backend.onrender.com/assetManagement/room/${roomId}`, {
                 headers: {
                     'x-admin-token': token,
                 },
@@ -66,7 +66,7 @@ const handleUpdateClick = (room) => {
 const handleUpdateSubmit = async (updatedData) => {
     const token = localStorage.getItem('admin_token');
     try {
-        await axios.put(`http://localhost:3000/room/${updatedData.roomId}`, updatedData, {
+        await axios.put(`https://invenso-backend.onrender.com/assetManagement/room/${updatedData.roomId}`, updatedData, {
             headers: {
                 'x-admin-token': token,
             },

@@ -60,7 +60,7 @@ function Room({ initialData, onSubmit, onCancel, isUpdate = false }) {
             onSubmit(formData);
         } else {
             // If in create mode, make the POST request
-            axios.post('http://localhost:3000/room', formData)
+            axios.post('https://invenso-backend.onrender.com/assetManagement/room', formData)
                 .then(response => {
                     setMessage("Room created successfully!");
                     handleRefresh(); // Reset form for new entry

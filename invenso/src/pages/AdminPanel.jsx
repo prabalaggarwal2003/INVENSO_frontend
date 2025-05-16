@@ -173,7 +173,7 @@ function AdminPanel() {
   const fetchIssueData = () => {
     const token = localStorage.getItem('admin_token');
     
-    axios.get('http://localhost:3000/assetManagement/issue', {
+    axios.get('https://invenso-backend.onrender.com/assetManagement/issue', {
       headers: {
         'x-admin-token': token,
       },
@@ -189,15 +189,19 @@ function AdminPanel() {
 
   const updateStatus = async (issueId, newStatus) => {
     const token = localStorage.getItem('admin_token');
+    
     try {
-      await axios.put(`http://localhost:3000/assetManagement/issue/${issueId}`, 
+      console.log('Updating issue:', issueId);
+      await axios.put(`https://invenso-backend.onrender.com/assetManagement/issue/${issueId}`, 
         { Status: newStatus },
         {
           headers: {
             'x-admin-token': token,
           },
         }
+        
       );
+      
       fetchIssueData(); // Refresh the data after update
     } catch (error) {
       console.error('Error updating status:', error);

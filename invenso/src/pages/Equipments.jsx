@@ -261,7 +261,7 @@ export default function Equipments() {
 
   const fetchEquipmentData = () => {
     const token = localStorage.getItem('admin_token');
-    axios.get('http://localhost:3000/assetManagement/equipment', {
+    axios.get('https://invenso-backend.onrender.com/assetManagement/equipment', {
       headers: {
         'x-admin-token': token,
       },
@@ -325,7 +325,7 @@ export default function Equipments() {
     };
 
     axios
-      .post("http://localhost:3000/assetManagement/equipment", updatedFormData)
+      .post("https://invenso-backend.onrender.com/assetManagement/equipment", updatedFormData)
       .then((response) => {
         setMessage("Submitted successfully!");
         setShowQR(true);
@@ -373,7 +373,7 @@ export default function Equipments() {
     };
 
     const token = localStorage.getItem('admin_token');
-    axios.put(`http://localhost:3000/assetManagement/equipment/${formData.equipmentId}`, updatedFormData, {
+    axios.put(`https://invenso-backend.onrender.com/assetManagement/equipment/${formData.equipmentId}`, updatedFormData, {
       headers: {
         'x-admin-token': token,
       },
@@ -392,7 +392,7 @@ export default function Equipments() {
 
   const deleteEquipment = (equipmentId) => {
     const token = localStorage.getItem('admin_token');
-    axios.delete(`http://localhost:3000/assetManagement/equipment/${equipmentId}`, {
+    axios.delete(`https://invenso-backend.onrender.com/assetManagement/equipment/${equipmentId}`, {
       headers: {
         'x-admin-token': token,
       },

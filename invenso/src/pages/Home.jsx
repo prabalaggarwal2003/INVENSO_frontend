@@ -25,7 +25,7 @@ function Home() {
 
   const fetchIssuesByEnrollment = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/assetManagement/issue/${enrollmentNo}`);
+      const response = await axios.get(`https://invenso-backend.onrender.com/assetManagement/issue/enrollment/${enrollmentNo}`);
       setIssueResults(response.data);
       setError(null);
     } catch (err) {
