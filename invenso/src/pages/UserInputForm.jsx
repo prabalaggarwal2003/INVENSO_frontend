@@ -52,19 +52,6 @@ function UserInputForm() {
     const formattedIssue = `[${timestamp}]: ${issueDesc}`;
 
     try {
-      // 1. Create new issue in issues table
-      // await axios.post("http://localhost:3000/assetManagement/issue", {
-      //   username: username,
-      //   enrollmentNo: enrollmentNo,
-      //   Location: equipment.Location,
-      //   equipmentType: equipment.equipmentType,
-      //   warranty: equipment.warranty,
-      //   purchaseDate: equipment.purchaseDate,
-      //   issueHistory: formattedIssue,
-      //   condition: equipment.condition,
-      //   isActive: true,
-      //   Status: "PENDING"
-      // });
       console.log("Sending issue payload:", {
   username,
   enrollmentNo,
