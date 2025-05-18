@@ -11,9 +11,11 @@ import AddEquipment from './pages/AddEquipment.jsx'
 import AdminPanel from './pages/AdminPanel.jsx'
 import SignUp from './pages/SignUp.jsx'
 import LogIn from './pages/LogIn.jsx'
-import UserPanel from './pages/UserPanel.jsx'
-import UserProfile from './pages/UserProfile.jsx'
 import UserInputForm from './pages/UserInputForm.jsx'
+import Rooms from './pages/Rooms.jsx'
+import Equipments from './pages/Equipments.jsx'
+import Equipmenttypes from './pages/Equipmenttypes.jsx'
+
 
 const router = createBrowserRouter(
   [
@@ -53,18 +55,24 @@ const router = createBrowserRouter(
           path: "/login",
           element: <LogIn/>
         },
-        {
-          path: "/userpanel",
-          element: <UserPanel/>
-        },
-        {
-          path: "/userprofile",
-          element: <UserProfile/>
-        },
+        
         {
           path: "/:equipmentType/:equipmentId",
           element: <UserInputForm />
         },
+        {
+          path: "/rooms",
+          element: <Rooms />
+        },
+        {
+          path: "/equipments",
+          element: <Equipments/>
+        },
+        {
+          path: "/equipmenttypes",
+          element: <Equipmenttypes/>
+        },
+        
       ]
     }
   ]

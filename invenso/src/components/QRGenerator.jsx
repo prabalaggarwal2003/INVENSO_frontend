@@ -8,7 +8,7 @@ function QRGenerator({ equipmentId, equipmentType }) {
 
   useEffect(() => {
     if (equipmentId && equipmentType) {
-      setUrl(`bpitindia.invenso.com/${equipmentType}/${equipmentId}`);
+      setUrl(`https://invenso-frontend-hh5z.vercel.app/${equipmentType}/${equipmentId}`);
       // setUrl(`/${equipmentType}/${equipmentId}`);
     }
   }, [equipmentId, equipmentType]);
