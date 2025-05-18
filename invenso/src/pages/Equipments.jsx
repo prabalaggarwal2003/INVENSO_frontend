@@ -338,9 +338,8 @@
 //   );
 // }
 import { useState, useEffect } from "react";
+import QRGenerator from "../components/QRGenerator";
 import axios from "axios";
-import Electronics from '../components/Electronics.jsx'
-import Furniture from '../components/Furniture.jsx'
 
 export default function Equipments() {
   const [message, setMessage] = useState("");
@@ -579,60 +578,11 @@ export default function Equipments() {
       setMessage("Deletion failed. " + (error.response?.data?.message || ""));
     });
   };
-  const getFilteredData = () => {
-    let filteredData = [...equipmentData];
-    
-    if (filters.types) {
-        filteredData = filteredData.filter(item => 
-            item.Types?.toLowerCase().includes(filters.types.toLowerCase())
-        );
-    }
-    
-    if (filters.condition) {
-        filteredData = filteredData.filter(item => 
-            item.condition?.toLowerCase().includes(filters.title.toLowerCase())
-        );
-    }
-    if (filters.location) {
-      filteredData = filteredData.filter(item => 
-          item.location?.toLowerCase().includes(filters.title.toLowerCase())
-      );
-  }
-    
-    return filteredData;
-};
-const filteredData = getFilteredData();
-    const indexOfLastRecord = currentPage * recordsPerPage;
-    const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-    const currentRecords = filteredData.slice(indexOfFirstRecord, indexOfLastRecord);
-    const totalPages = Math.ceil(filteredData.length / recordsPerPage);
-
-    // Change page
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-    // Handle filter change
-    const handleFilterChange = (e) => {
-        const { name, value } = e.target;
-        setFilters(prev => ({
-            ...prev,
-            [name]: value
-        }));
-        setCurrentPage(1); // Reset to first page when filters change
-    };
-
-    // Get unique values for dropdown options
-    const getUniqueValues = (key) => {
-        const values = new Set();
-        equipmentData.forEach(item => {
-            if (item[key] !== undefined && item[key] !== null) values.add(item[key]);
-        });
-        return Array.from(values).sort((a, b) => String(a).localeCompare(String(b)));
-    };
 
   return (
     <div className="p-4">
       {/* Update Form Modal */}
-      {/* {showUpdateForm && (
+      {showUpdateForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white p-6 rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
             <h2 className="text-xl font-bold mb-4">Update Equipment</h2>
@@ -753,41 +703,7 @@ const filteredData = getFilteredData();
             </form>
           </div>
         </div>
-      )} */}
-                  {showUpdateForm && selectedEquipment && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-    <div className="bg-white p-6 rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
-      <h2 className="text-xl font-bold mb-4">Update Equipment Details</h2>
-
-      {selectedEquipment.equipmentType === 'Electronics' ? (
-        <Electronics
-          initialData={selectedEquipment}
-          onSubmit={handleUpdateSubmit}
-          onCancel={() => {
-            setShowUpdateForm(false);
-            setSelectedEquipment(null);
-          }}
-          isUpdate={true}
-        />
-      ) : selectedEquipment.equipmentType === 'Furniture' ? (
-        <Furniture
-          initialData={selectedEquipment}
-          onSubmit={handleUpdateSubmit}
-          onCancel={() => {
-            setShowUpdateForm(false);
-            setSelectedEquipment(null);
-          }}
-          isUpdate={true}
-        />
-      ) : (
-        <div className="text-red-500 text-center">
-          Unsupported equipment type: {selectedEquipment.equipmentType}
-        </div>
       )}
-    </div>
-  </div>
-)}
-
 
       {/* Create Form */}
       <div className="bg-white p-6 rounded-lg shadow-md mb-6">
