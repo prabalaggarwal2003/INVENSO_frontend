@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -27,7 +26,7 @@ function AdminPanel() {
       },
     })
     .then(response3 => {
-      setIssueData(response3.data); // assuming response.data is an array
+      setIssueData(response3.data); 
       console.log(response3.data);
     })
     .catch(error => {
@@ -50,7 +49,7 @@ function AdminPanel() {
         
       );
       
-      fetchIssueData(); // Refresh the data after update
+      fetchIssueData();
     } catch (error) {
       console.error('Error updating status:', error);
     }
@@ -60,7 +59,6 @@ function AdminPanel() {
     return Array.isArray(issueData) ? [...issueData].reverse() : [];
   };
 
-  // Apply filters to data
   const getFilteredData = () => {
     let filteredData = getReversedData();
     
@@ -91,27 +89,23 @@ function AdminPanel() {
     return filteredData;
   };
 
-  // Get current records
   const filteredData = getFilteredData();
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
   const currentRecords = filteredData.slice(indexOfFirstRecord, indexOfLastRecord);
   const totalPages = Math.ceil(filteredData.length / recordsPerPage);
 
-  // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Handle filter change
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters(prev => ({
       ...prev,
       [name]: value
     }));
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1); 
   };
 
-  // Get unique values for dropdown options
   const getUniqueValues = (key) => {
     const values = new Set();
     getReversedData().forEach(item => {
@@ -122,44 +116,54 @@ function AdminPanel() {
 
   return (
     <div className='p-6'>
-      <h1 className='text-3xl text-center mt-16'>
+      <h1 className='text-3xl text-center mt-16 font-[1000]'>
         Welcome to Admin Dashboard
       </h1>
       <h2 className='text-2xl text-center mt-4'>
-        View all your reports here and create asset-wise inventory
+        View all reports here and Create and Manage Inventory
       </h2>
+
+      <div className='flex text-2xl mt-12 justify-center'>
+        <Link to='/inventory'>
+          <button className='text-lg cursor-pointer bg-blue-500 text-white px-4 py-2 rounded'>
+            Create and Manage your Inventory
+          </button>
+        </Link>
+      </div>
+
+
+
+      <h2 className='text-2xl text-center mt-16'>
+        Check your Inventory
+      </h2>
+      <div className='flex flex-row justify-center mt-8'>
       <Link to='/rooms'>
-        <button className='cursor-pointer bg-blue-500 text-white px-4 py-2 rounded'>
+        <button className='text-lg cursor-pointer bg-blue-500 text-white px-4 py-2 rounded mx-4'>
           Check Room Inventory
         </button>
       </Link>
       <br />
       <br />
       <Link to='/equipments'>
-        <button className='cursor-pointer bg-blue-500 text-white px-4 py-2 rounded'>
-          Create Equipment Inventory
+        <button className='text-lg cursor-pointer bg-blue-500 text-white px-4 py-2 rounded mx-4'>
+          Check Equipment Inventory
         </button>
       </Link>
       <br />
       <br />
       <Link to='/equipmenttypes'>
-        <button className='cursor-pointer bg-blue-500 text-white px-4 py-2 rounded'>
-          Create Equipment Type Inventory
+        <button className='text-lg cursor-pointer bg-blue-500 text-white px-4 py-2 rounded mx-4'>
+          Check Equipment Type Inventory
         </button>
       </Link>
       <br />
       <br />
-      <div className='flex ml-16 text-2xl mt-8'>
-        <Link to='/inventory'>
-          <button className='cursor-pointer bg-blue-500 text-white px-4 py-2 rounded'>
-            Create and Manage your Inventory
-          </button>
-        </Link>
       </div>
+     
 
       <div className='mt-12'>
-        <h1 className='text-2xl text-center mb-4'>
-          View all previous reports below:
+        <h1 className='text-3xl text-center mb-4 font-[1000]'>
+          View all reports below:
         </h1>
 
         {/* Filter controls */}
@@ -170,7 +174,7 @@ function AdminPanel() {
               name="location"
               value={filters.location}
               onChange={handleFilterChange}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-sm"
             >
               <option value="">All Locations</option>
               {getUniqueValues('Location').map((location, index) => (
@@ -185,7 +189,7 @@ function AdminPanel() {
               name="condition"
               value={filters.condition}
               onChange={handleFilterChange}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-sm"
             >
               <option value="">All Conditions</option>
               {getUniqueValues('condition').map((condition, index) => (
@@ -200,9 +204,9 @@ function AdminPanel() {
               name="status"
               value={filters.status}
               onChange={handleFilterChange}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-sm"
             >
-              <option value="">All Statuses</option>
+              <option value="">All Status</option>
               {getUniqueValues('Status').map((status, index) => (
                 <option key={index} value={status}>{status}</option>
               ))}
@@ -215,7 +219,7 @@ function AdminPanel() {
               name="equipmentType"
               value={filters.equipmentType}
               onChange={handleFilterChange}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded text-sm"
             >
               <option value="">All Equipment Types</option>
               {getUniqueValues('equipmentType').map((type, index) => (
@@ -226,7 +230,7 @@ function AdminPanel() {
         </div>
 
         <br />
-        <table className='min-w-full border border-gray-300'>
+        <table className='min-w-full border border-gray-300 text-sm'>
           <thead>
             <tr className='bg-gray-100'>
               <th className='px-4 py-2 border'>Issue ID.</th>

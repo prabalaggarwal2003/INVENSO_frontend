@@ -12,7 +12,6 @@ function Room({ initialData, onSubmit, onCancel, isUpdate = false }) {
         Location: "Select",
     });
 
-    // Initialize form with initialData when component mounts or initialData changes
     useEffect(() => {
         if (isUpdate && initialData) {
             setFormData({
@@ -62,7 +61,7 @@ function Room({ initialData, onSubmit, onCancel, isUpdate = false }) {
             // If in create mode, make the POST request
             axios.post('https://invenso-backend.onrender.com/assetManagement/assetManagement/room', formData)
                 .then(response => {
-                    setMessage("Room created successfully!");
+                    setMessage("Room added successfully!");
                     handleRefresh(); // Reset form for new entry
                     // If you want to trigger a refresh of the room list, you could add:
                     // if (onSubmit) onSubmit(); // This would be a callback from parent
@@ -75,29 +74,30 @@ function Room({ initialData, onSubmit, onCancel, isUpdate = false }) {
     };
 
     return (
-        <div>
+        <div className='p-4'>
             <div className="flex justify-center">
-                <form onSubmit={handleSubmit} className="form-container">
-                    <h2 className="form-title text-center text-xl">
+                <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
+                    <h2 className="text-xl font-bold text-center mb-6">
                         {isUpdate ? "Update Room" : "Create New Room"}
                     </h2>
-                    <br />
-                    <label className="form-label">
+                    <div className="space-y-2">
+                    <label className="block">
                         Room No.:
                         <input 
                             type="number" 
                             name="roomId" 
                             value={formData.roomId} 
                             onChange={handleChange} 
-                            className="form-input" 
+                            className="w-full p-2 border rounded mt-1" 
                             required 
                             disabled={isUpdate} // Disable roomId field in update mode
                         />
                     </label>
-                    <br />
-                    <label className="form-label">
+                    </div>
+                    <div className="space-y-2">
+                    <label className="block">
                         Room Type:
-                        <select name="roomType" value={formData.roomType} onChange={handleChange} className="form-input-drop">
+                        <select name="roomType" value={formData.roomType} onChange={handleChange} className="w-full p-2 border rounded mt-1">
                             <option value="select">Select</option>
                             <option value="classroom">Classroom</option>
                             <option value="seminar hall">Seminar Hall</option>
@@ -108,10 +108,11 @@ function Room({ initialData, onSubmit, onCancel, isUpdate = false }) {
                             <option value="others">Others</option>
                         </select>
                     </label>
-                    <br />
-                    <div className="form-radio-container">
-                        <span className="form-label">Active:</span>
-                        <label className="form-radio">
+                    </div>
+
+                    <div className="space-y-2">
+                        <span className="block">Active:</span>
+                        <label className="block">
                             <input 
                                 type="radio" 
                                 name="isActive" 
@@ -121,6 +122,7 @@ function Room({ initialData, onSubmit, onCancel, isUpdate = false }) {
                             />
                             True
                         </label>
+                        
                         <label className="form-radio">
                             <input 
                                 type="radio" 
@@ -132,30 +134,33 @@ function Room({ initialData, onSubmit, onCancel, isUpdate = false }) {
                             False
                         </label>
                     </div>
-                    <label className="form-label">
+                    <div className="space-y-2">
+                    <label className="block">
                         Floor No.:
-                        <input type="number" name="FloorNo" value={formData.FloorNo} onChange={handleChange} className="form-input" required />
+                        <input type="number" name="FloorNo" value={formData.FloorNo} onChange={handleChange} className="w-full p-2 border rounded mt-1" required />
                     </label>
-                    <br />
-                    <label className="form-label">
+                    </div>
+                    <div className="space-y-2">
+                    <label className="block">
                         Condition:
-                        <select name="Condition" value={formData.Condition} onChange={handleChange} className="form-input-drop">
+                        <select name="Condition" value={formData.Condition} onChange={handleChange} className="w-full p-2 border rounded mt-1">
                             <option value="New">New</option>
                             <option value="Good">Good</option>
                             <option value="Needs_Repair">Needs Repair</option>
                         </select>
                     </label>
-                    <br />
-                    <label className="form-label">
+                    </div>
+                    <div className="space-y-2">
+                    <label className="block">
                         Location:
-                        <select name="Location" value={formData.Location} onChange={handleChange} className="form-input-drop">
+                        <select name="Location" value={formData.Location} onChange={handleChange} className="w-full p-2 border rounded mt-1">
                             <option value="select">Select</option>
                             <option value="oldbuilding">Old Building</option>
                             <option value="newbuilding">New Building</option>
                         </select>
                     </label>
-                    <br />
-                    <br />
+                    </div>
+                    
                     <div className="flex justify-center space-x-4">
                         <button type="submit" className="form-button flex justify-center text-xl border-2 border-black rounded-lg p-2 cursor-pointer">
                             {isUpdate ? "Update" : "Submit"}

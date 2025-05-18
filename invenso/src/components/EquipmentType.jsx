@@ -13,7 +13,6 @@ function EquipmentType({ initialData, onSubmit, onCancel, isUpdate = false }) {
 
     const [message, setMessage] = useState("");
 
-    // Initialize form with initialData when component mounts or initialData changes
     useEffect(() => {
         if (isUpdate && initialData) {
             setFormData({
@@ -36,7 +35,7 @@ function EquipmentType({ initialData, onSubmit, onCancel, isUpdate = false }) {
             isActive: true,
             Description: ""
         });
-        setMessage("Submitted successfully!");
+        setMessage("Equipment Type added successfully!");
     };
 
     const handleChange = (e) => {
@@ -63,7 +62,7 @@ function EquipmentType({ initialData, onSubmit, onCancel, isUpdate = false }) {
         } else {
             axios.post('https://invenso-backend.onrender.com/assetManagement/equipmentType', formData)
                 .then(response => {
-                    setMessage("Submitted successfully!");
+                    setMessage("Equipment Type added successfully!");
                     handleRefresh();
                 })
                 .catch(error => {
@@ -74,45 +73,48 @@ function EquipmentType({ initialData, onSubmit, onCancel, isUpdate = false }) {
     };
 
     return (
-        <div>
+        <div className='p-4'>
             <div className="flex justify-center">
-                <form onSubmit={handleSubmit} className="form-container">
-                    <h2 className="form-title text-center text-xl">
+                <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
+                    <h2 className="text-xl font-bold text-center mb-6">
                         {isUpdate ? "Update Equipment Type" : "Create Equipment Type"}
                     </h2>
-                    <br />
-                    <label className="form-label">
+                    <div className="space-y-2">
+                    <label className="block">
                         Equipment Type ID:
                         <input
                             type="number"
                             name="equipmentTypeId"
                             value={formData.equipmentTypeId}
                             onChange={handleChange}
-                            className="form-input"
+                            className="w-full p-2 border rounded mt-1"
                             required
                             disabled={isUpdate}
                         />
                     </label>
-                    <br />
-                    <label className="form-label">
+                    </div>
+                    <div className="space-y-2">
+                    <label className="block">
                         Equipment Name:
                         <input
                             type="text"
                             name="Title"
                             value={formData.Title}
                             onChange={handleChange}
-                            className="form-input"
+                            className="w-full p-2 border rounded mt-1"
                             required
                         />
                     </label>
-                    <br />
-                    <label className="form-label">
+                    </div>
+
+                    <div className="space-y-2">
+                    <label className="block">
                         Type:
                         <select
                             name="Types"
                             value={formData.Types}
                             onChange={handleChange}
-                            className="form-input-drop"
+                            className="w-full p-2 border rounded mt-1"
                         >
                             <option value="Select">Select</option>
                             <option value="electronics">Electronics</option>
@@ -120,42 +122,49 @@ function EquipmentType({ initialData, onSubmit, onCancel, isUpdate = false }) {
                             <option value="others">Others</option>
                         </select>
                     </label>
-                    <br />
-                    <label className="form-label">
+                    </div>
+
+                    <div className="space-y-2">
+                    <label className="block">
                         Quantity:
                         <input
                             type="number"
                             name="Quantity"
                             value={formData.Quantity}
                             onChange={handleChange}
-                            className="form-input"
+                            className="w-full p-2 border rounded mt-1"
                             required
                         />
                     </label>
-                    <br />
-                    <label className="form-label">
+                    </div>
+
+                    <div className="space-y-2">
+                    <label className="block">
                         Active:
                         <input
                             type="checkbox"
                             name="isActive"
                             checked={formData.isActive}
                             onChange={handleChange}
-                            className="ml-2"
+                            className="ml-4 w-6 h-6 rounded"
                         />
                     </label>
-                    <br />
-                    <label className="form-label">
+                    </div>
+
+                    <div className="space-y-2">
+                    <label className="block">
                         Description:
                         <input
                             type="textbox"
                             name="Description"
                             value={formData.Description}
                             onChange={handleChange}
-                            className="form-input"
+                            className="w-full p-2 border rounded mt-1"
                             required
                         />
                     </label>
-                    <br />
+                    </div>
+
                     <div className="flex justify-center space-x-4">
                         <button
                             type="submit"

@@ -3,24 +3,36 @@ import {Link} from "react-router-dom"
 
 function Inventory() {
   return (
-    <div>
-        <h1 className='text-center text-3xl mt-16'>
+    <div className='p-6'>
+        <h1 className='text-center text-3xl mt-16 font-[1000]'>
             Create asset wise Inventory here!
         </h1>
-        <h2 className='text-center text-xl'>
+        <h2 className='text-center text-2xl mt-4'>
             Fill the asset specific form and add it to your Inventory!
         </h2>
         <br />
-        <div>
-            <h1 className='text-xl ml-12'>
-                <p>
-                    <Link to="/addrooms"> 1. Add Rooms </Link><br />
-                    <Link to="/addtype"> 2. Add Equipment Types</Link> <br />
-                    <Link to="/addequipment"> 3. Add Equipment </Link><br />
-                </p>
-            </h1>
+        
+            <div className='flex flex-row justify-center mt-12'>
+                
+                    <Link to="/addrooms">
+                    <button className='text-lg cursor-pointer bg-blue-500 text-white px-4 py-2 rounded mx-4'>
+                        Add Rooms
+                    </button>
+                    </Link>
+                    <Link to="/addtype">
+                    <button className='text-lg cursor-pointer bg-blue-500 text-white px-4 py-2 rounded mx-4'>
+                        Add Types of Equipment
+                    </button>
+                    </Link>
+                    <Link to="/addequipment">
+                    <button className='text-lg cursor-pointer bg-blue-500 text-white px-4 py-2 rounded mx-4'>
+                        Add Equipment
+                    </button>
+                    </Link>
+                
+            </div>
             <br />
-        </div>
+        
         <br />
     </div>
   )

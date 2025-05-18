@@ -3,8 +3,8 @@ import EquipmentType from '../components/EquipmentType'
 
 function AddType() {
   return (
-    <div>
-      <h1 className='text-2xl text-center mt-12'>
+    <div className='p-6'>
+      <h1 className='text-3xl text-center mt-16 font-[1000]'>
         Add Types of Equipment
       </h1>
       <br />

@@ -190,7 +190,7 @@ import { useState, useEffect } from "react";
 import QRGenerator from "./QRGenerator";
 import axios from "axios";
 
-export default function Electronics() {
+export default function Electronics({ initialData, onSubmit, onCancel, isUpdate = false }) {
   const [equipmentTypes, setEquipmentTypes] = useState([]);
   const [message, setMessage] = useState("");
   const [showQR, setShowQR] = useState(false);
@@ -207,7 +207,22 @@ export default function Electronics() {
     isActive: false,
   });
 
-  // Fetch all equipment types and filter electronics
+  useEffect(() => {
+    if (isUpdate && initialData) {
+        setFormData({
+          equipmentId: initialData.equipmentId ?? 0,
+          equipmentType: initialData.equipmentType ?? "select",
+          warranty: initialData.warranty ?? "true",
+          condition: initialData.condition ?? "New",
+          Location: initialData.Location ?? "New Building",
+          purchaseDate: initialData.purchaseDate ?? "",
+          qrCode: initialData.qrCode ?? "",
+          issueHistory: initialData.issueHistory ?? "",
+          isActive: initialData.isActive ?? false,
+        });
+    }
+}, [initialData, isUpdate]);
+
   useEffect(() => {
     axios.get("https://invenso-backend.onrender.com/assetManagement/equipmentType")
       .then(res => {
@@ -224,7 +239,9 @@ export default function Electronics() {
       equipmentType: "select",
       warranty: "true",
       purchaseDate: "",
+      issueHistory: "",
       condition: "New",
+      isActive: false,
       qrCode: "",
     });
     setShowQR(false);
@@ -258,7 +275,11 @@ export default function Electronics() {
       purchaseDate: formattedDate,
       qrCode: qrCodeURL,
     };
-
+    
+    if (isUpdate) {
+      // If in update mode, call the onSubmit prop (which should handle the update)
+      onSubmit(formData);
+  } else {
     axios.post("https://invenso-backend.onrender.com/assetManagement/equipment", updatedFormData)
       .then(() => {
         setMessage("Submitted successfully!");
@@ -268,37 +289,42 @@ export default function Electronics() {
         console.error("Error submitting data:", error);
         setMessage("Submission failed.");
       });
-  };
+  }
+};
 
   return (
-    <div>
+    <div className="p-4">
       <div className="flex justify-center">
-        <br />
-        <br />
-        <form onSubmit={handleSubmit} className="form-container">
-          <h2 className="form-title text-xl text-center">Electronics Form</h2>
+        <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
+          <h2 className="text-xl font-bold text-center mb-6">
+          {isUpdate ? "Update Equipment" : "Add New Equipment"}
+
+          </h2>
           <br />
           
-          <label className="form-label">
+          <div className="space-y-2">
+          <label className="block">
             Equipment ID:
             <input
               type="number"
               name="equipmentId"
               value={formData.equipmentId}
               onChange={handleChange}
-              className="form-input"
+              className="w-full p-2 border rounded mt-1"
               required
+              disabled={isUpdate}
             />
           </label>
-          <br />
+          </div>
           
-          <label className="form-label">
+          <div className="space-y-2">
+          <label className="block">
             Equipment Type:
             <select
               name="equipmentType"
               value={formData.equipmentType}
               onChange={handleChange}
-              className="form-input-drop"
+              className="w-full p-2 border rounded mt-1"
             >
               <option value="select">Select</option>
               {equipmentTypes.map(type => (
@@ -307,55 +333,58 @@ export default function Electronics() {
                 </option>
               ))}
               {/* Fallback options if API fails */}
-              <option value="AC">AC</option>
+              {/* <option value="AC">AC</option>
               <option value="PC">PC</option>
-              <option value="Printer">Printer</option>
+              <option value="Printer">Printer</option> */}
             </select>
           </label>
-          <br />
+          </div>
           
-          <label className="form-label">
+          <div className="space-y-2">
+          <label className="block">
             Purchase Date:
             <input
               type="datetime-local"
               name="purchaseDate"
               value={formData.purchaseDate}
               onChange={handleChange}
-              className="form-input"
+              className="w-full p-2 border rounded mt-1"
               required
             />
           </label>
-          <br />
+          </div>
           
-          <label className="form-label">
+          <div className="space-y-2">
+          <label className="block">
             Condition:
             <select
               name="condition"
               value={formData.condition}
               onChange={handleChange}
-              className="form-input-drop"
+              className="w-full p-2 border rounded mt-1"
             >
               <option value="New">New</option>
               <option value="Good">Good</option>
               <option value="Needs_Repair">Needs Repair</option>
             </select>
           </label>
-          <br />
+          </div>
           
-          <label className="form-label">
+          <div className="space-y-2">
+          <label className="block">
             Location:
             <input
               type="text"
               name="Location"
               value={formData.Location}
               onChange={handleChange}
-              className="form-input"
+              className="w-full p-2 border rounded mt-1"
               required
             />
           </label>
-          <br />
+          </div>
           
-          <label className="form-label">
+          {/* <label className="form-label">
             Warranty:
             <select
               name="warranty"
@@ -366,36 +395,45 @@ export default function Electronics() {
               <option value="true">Yes</option>
               <option value="false">No</option>
             </select>
-          </label>
-          <br />
-          <br />
+          </label> */}
           
-          <button
-            type="submit"
-            className="form-button flex justify-center text-xl border-2 border-black rounded-lg p-2 cursor-pointer"
-          >
-            Submit
-          </button>
+          
+          <div className="flex justify-center space-x-4">
+                        <button type="submit" className="form-button flex justify-center text-xl border-2 border-black rounded-lg p-2 cursor-pointer">
+                            {isUpdate ? "Update" : "Submit"}
+                        </button>
+                        {isUpdate && (
+                            <button 
+                                type="button" 
+                                onClick={onCancel}
+                                className="form-button flex justify-center text-xl border-2 border-black rounded-lg p-2 cursor-pointer bg-gray-200"
+                            >
+                                Cancel
+                            </button>
+                        )}
+                    </div>
         </form>
 
         {showQR && (
+          <div className="flex justify-center mt-6">
           <QRGenerator
             equipmentId={formData.equipmentId}
             equipmentType={formData.equipmentType}
           />
+          </div>
         )}
+      
       </div>
-      <br />
-      <div className="flex justify-center text-xl">
-        <button className="cursor-pointer" onClick={handleRefresh}>
+      <div className="flex justify-center mt-6">
+        <button className="cursor-pointer text-blue-500 hover:text-blue-700" onClick={handleRefresh}>
           Add More
         </button>
       </div>
       {message && (
-        <div className="flex justify-center mt-4 text-lg text-blue-600">
-          {message}
-        </div>
-      )}
+                <div className={`flex justify-center mt-4 text-lg ${message.includes("success") ? "text-green-600" : "text-red-600"}`}>
+                    {message}
+                </div>
+            )}
     </div>
   );
 }

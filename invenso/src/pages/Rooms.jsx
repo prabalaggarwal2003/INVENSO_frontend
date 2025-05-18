@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import Room from '../components/Room'; // Assuming the Room form component is in the same directory
+import Room from '../components/Room'; 
 
 function Rooms() {
     const [roomData, setRoomData] = useState([]);
@@ -44,14 +44,14 @@ function Rooms() {
                     'x-admin-token': token,
                 },
             });
-            fetchRoomData(); // Refresh the data after deletion
+            fetchRoomData(); 
         } catch (error) {
             console.error('Error deleting room:', error);
         }
     };
 
 const handleUpdateClick = (room) => {
-    console.log("Updating room:", room); // Verify the data
+    console.log("Updating room:", room);
     setSelectedRoom({
         roomId: room.roomId,
         roomType: room.roomType,
@@ -71,7 +71,7 @@ const handleUpdateSubmit = async (updatedData) => {
                 'x-admin-token': token,
             },
         });
-        fetchRoomData(); // Refresh the data
+        fetchRoomData(); 
         setShowUpdateForm(false);
         setSelectedRoom(null);
     } catch (error) {
@@ -79,7 +79,6 @@ const handleUpdateSubmit = async (updatedData) => {
     }
 };
 
-    // Apply filters to data
     const getFilteredData = () => {
         let filteredData = [...roomData];
         
@@ -110,27 +109,23 @@ const handleUpdateSubmit = async (updatedData) => {
         return filteredData;
     };
 
-    // Get current records
     const filteredData = getFilteredData();
     const indexOfLastRecord = currentPage * recordsPerPage;
     const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
     const currentRecords = filteredData.slice(indexOfFirstRecord, indexOfLastRecord);
     const totalPages = Math.ceil(filteredData.length / recordsPerPage);
 
-    // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    // Handle filter change
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         setFilters(prev => ({
             ...prev,
             [name]: value
         }));
-        setCurrentPage(1); // Reset to first page when filters change
+        setCurrentPage(1); 
     };
 
-    // Get unique values for dropdown options
     const getUniqueValues = (key) => {
         const values = new Set();
         roomData.forEach(item => {
@@ -161,7 +156,9 @@ const handleUpdateSubmit = async (updatedData) => {
                 </div>
             ) : null}
 
-            {/* Filter controls */}
+<h2 className='text-2xl text-center mt-16 mb-8'>
+    ROOM INVENTORY
+</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 p-4 bg-gray-100 rounded-lg">
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Room Type</label>
@@ -169,7 +166,7 @@ const handleUpdateSubmit = async (updatedData) => {
                         name="roomType"
                         value={filters.roomType}
                         onChange={handleFilterChange}
-                        className="w-full p-2 border rounded"
+                        className="w-full p-2 border rounded text-sm"
                     >
                         <option value="">All Room Types</option>
                         {getUniqueValues('roomType').map((type, index) => (
@@ -184,7 +181,7 @@ const handleUpdateSubmit = async (updatedData) => {
                         name="location"
                         value={filters.location}
                         onChange={handleFilterChange}
-                        className="w-full p-2 border rounded"
+                        className="w-full p-2 border rounded text-sm"
                     >
                         <option value="">All Locations</option>
                         {getUniqueValues('Location').map((location, index) => (
@@ -199,7 +196,7 @@ const handleUpdateSubmit = async (updatedData) => {
                         name="condition"
                         value={filters.condition}
                         onChange={handleFilterChange}
-                        className="w-full p-2 border rounded"
+                        className="w-full p-2 border rounded text-sm"
                     >
                         <option value="">All Conditions</option>
                         {getUniqueValues('Condition').map((condition, index) => (
@@ -214,7 +211,7 @@ const handleUpdateSubmit = async (updatedData) => {
                         name="floorNo"
                         value={filters.floorNo}
                         onChange={handleFilterChange}
-                        className="w-full p-2 border rounded"
+                        className="w-full p-2 border rounded text-sm"
                     >
                         <option value="">All Floors</option>
                         {getUniqueValues('FloorNo').map((floor, index) => (
@@ -224,7 +221,7 @@ const handleUpdateSubmit = async (updatedData) => {
                 </div>
             </div>
 
-            <table className='min-w-full border border-gray-300'>
+            <table className='min-w-full border border-gray-300 text-sm'>
                 <thead>
                     <tr className='bg-gray-100'>
                         <th className='px-4 py-2 border'>Room No.</th>
@@ -272,7 +269,6 @@ const handleUpdateSubmit = async (updatedData) => {
                 </tbody>
             </table>
 
-            {/* Pagination controls */}
             {filteredData.length > recordsPerPage && (
                 <div className="flex justify-center mt-4">
                     <button

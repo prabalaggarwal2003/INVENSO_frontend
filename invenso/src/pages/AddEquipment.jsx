@@ -16,8 +16,8 @@ function AddEquipment() {
   };
 
   return (
-    <>
-    <h1 className='text-2xl text-center mt-12'>
+    <div className='p-6'>
+    <h1 className='text-3xl text-center mt-16 font-[1000]'>
       Choose the type of equipment you want to add
     </h1>
     <br />
@@ -37,7 +37,7 @@ function AddEquipment() {
     {data === "Electronics" && <Electronics />}
     {data === "Furniture" && <Furniture />}
     
-    </>
+    </div>
   )
 }
 
