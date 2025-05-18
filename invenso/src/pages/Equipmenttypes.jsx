@@ -143,7 +143,10 @@ function Equipmenttype() {
                 </div>
             ) : null}
 
-            {/* Filter controls */}
+<h2 className='text-2xl text-center mt-16 mb-8'>
+    TYPES OF EQUIPMENTS INVENTORY
+</h2>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 p-4 bg-gray-100 rounded-lg">
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Equipment Type</label>
@@ -151,7 +154,7 @@ function Equipmenttype() {
                         name="types"
                         value={filters.types}
                         onChange={handleFilterChange}
-                        className="w-full p-2 border rounded"
+                        className="w-full p-2 border rounded text-sm"
                     >
                         <option value="">All Types</option>
                         {getUniqueValues('Types').map((type, index) => (
@@ -166,7 +169,7 @@ function Equipmenttype() {
                         name="title"
                         value={filters.title}
                         onChange={handleFilterChange}
-                        className="w-full p-2 border rounded"
+                        className="w-full p-2 border rounded text-sm"
                     >
                         <option value="">All Names</option>
                         {getUniqueValues('Title').map((title, index) => (
@@ -176,7 +179,7 @@ function Equipmenttype() {
                 </div>
             </div>
 
-            <table className='min-w-full border border-gray-300'>
+            <table className='min-w-full border border-gray-300 text-sm'>
                 <thead>
                     <tr className='bg-gray-100'>
                         <th className='px-4 py-2 border'>Equipment Type ID</th>

@@ -190,7 +190,7 @@ import { useState, useEffect } from "react";
 import QRGenerator from "./QRGenerator";
 import axios from "axios";
 
-export default function Furniture() {
+export default function Furniture({ initialData, onSubmit, onCancel, isUpdate = false }) {
   const [equipmentTypes, setEquipmentTypes] = useState([]);
   const [message, setMessage] = useState("");
   const [showQR, setShowQR] = useState(false);
@@ -206,6 +206,22 @@ export default function Furniture() {
     isActive: false,
     qrCode: "",
   });
+
+  useEffect(() => {
+    if (isUpdate && initialData) {
+        setFormData({
+          equipmentId: initialData.equipmentId ?? 0,
+          equipmentType: initialData.equipmentType ?? "select",
+          warranty: initialData.warranty ?? "true",
+          condition: initialData.condition ?? "New",
+          Location: initialData.Location ?? "New Building",
+          purchaseDate: initialData.purchaseDate ?? "",
+          qrCode: initialData.qrCode ?? "",
+          issueHistory: initialData.issueHistory ?? "",
+          isActive: initialData.isActive ?? false,
+        });
+    }
+}, [initialData, isUpdate]);
 
   // Fetch all equipment types and filter "furniture"
   useEffect(() => {
@@ -260,7 +276,10 @@ export default function Furniture() {
       purchaseDate: formattedDate,
       qrCode: qrCodeURL,
     };
-
+    if (isUpdate) {
+      // If in update mode, call the onSubmit prop (which should handle the update)
+      onSubmit(formData);
+  } else {
     axios.post("https://invenso-backend.onrender.com/assetManagement/equipment", updatedFormData)
       .then(() => {
         setMessage("Submitted successfully!");
@@ -270,13 +289,16 @@ export default function Furniture() {
         console.error("Error submitting data:", error);
         setMessage("Submission failed.");
       });
-  };
+  }
+};
 
   return (
     <div className="p-4">
       <div className="flex justify-center">
         <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
-          <h2 className="text-xl font-bold text-center mb-6">Furniture Form</h2>
+          <h2 className="text-xl font-bold text-center mb-6">
+          {isUpdate ? "Update Equipment" : "Add New Equipment"}
+          </h2>
           
           <div className="space-y-2">
             <label className="block">
@@ -288,6 +310,7 @@ export default function Furniture() {
                 onChange={handleChange} 
                 className="w-full p-2 border rounded mt-1" 
                 required 
+                disabled={isUpdate}
               />
             </label>
           </div>
@@ -355,14 +378,20 @@ export default function Furniture() {
             </label>
           </div>
 
-          <div className="pt-4">
-            <button 
-              type="submit" 
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-            >
-              Submit
-            </button>
-          </div>
+          <div className="flex justify-center space-x-4">
+                        <button type="submit" className="form-button flex justify-center text-xl border-2 border-black rounded-lg p-2 cursor-pointer">
+                            {isUpdate ? "Update" : "Submit"}
+                        </button>
+                        {isUpdate && (
+                            <button 
+                                type="button" 
+                                onClick={onCancel}
+                                className="form-button flex justify-center text-xl border-2 border-black rounded-lg p-2 cursor-pointer bg-gray-200"
+                            >
+                                Cancel
+                            </button>
+                        )}
+                    </div>
         </form>
       </div>
       
@@ -378,17 +407,17 @@ export default function Furniture() {
       <div className="flex justify-center mt-6">
         <button 
           onClick={handleRefresh}
-          className="text-blue-500 hover:text-blue-700"
+          className="cursor-pointer text-blue-500 hover:text-blue-700"
         >
           Add More
         </button>
       </div>
       
       {message && (
-        <div className="flex justify-center mt-4 text-lg text-blue-600">
-          {message}
-        </div>
-      )}
+                <div className={`flex justify-center mt-4 text-lg ${message.includes("success") ? "text-green-600" : "text-red-600"}`}>
+                    {message}
+                </div>
+            )}
     </div>
   );
 }

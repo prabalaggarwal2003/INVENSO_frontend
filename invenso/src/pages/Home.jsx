@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom'
 import Lottie from 'lottie-react'
 import homeAnimation from '../lotties/homeAnimation.json'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import axios from 'axios'
+import About from '../components/About'
 
 function Home() {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ function Home() {
       localStorage.setItem('admin_token', token); 
       navigate('/adminpanel');
     } else {
-      alert('Invalid admin token');
+      alert('Invalid admin token. Try again!');
     }
   };
 
@@ -49,23 +49,34 @@ function Home() {
         
 <br />
 
-<div>
-  <Lottie animationData ={homeAnimation} className='w-1/4 h-[20rem]'/>
+<div className='flex flex-row justify-evenly'>
+  <Lottie animationData ={homeAnimation} className='w-1/4 h-[20rem] '/>
+  <p className='text-3xl mt-32'>
+  Smart Tracking. Seamless Management. Smarter Campus.
+  </p>
 </div>
-        <div>
-      <h1>Welcome to the site</h1>
-      <button onClick={handleAdminAccess}>Admin Access</button>
+<br />
+<div>
+  <About/>
+</div>
+<br />
+<br />
+<br />
+        <div className='flex flex-row justify-center'>
+        <h2 className='text-2xl font-bold text-center mr-4 mt-2'>Log into Admin Panel</h2>
+      <button className='bg-blue-500 text-white px-4 py-2 rounded-lg' onClick={handleAdminAccess}>Admin Access</button>
     </div>
 <br />
-<div className='mt-10 px-4'>
-        <h2 className='text-2xl font-bold text-center'>Check Your Issue Details</h2>
+<br />
+<div className='mt-10 px-4 mb-12'>
+        <h2 className='text-2xl font-bold text-center'>Check Your Issue History</h2>
         <div className='flex justify-center mt-4'>
           <input
             type="text"
-            placeholder="Enter Enrollment Number"
+            placeholder="Enter Enrolment No."
             value={enrollmentNo}
             onChange={(e) => setEnrollmentNo(e.target.value)}
-            className='border px-4 py-2 rounded-l w-64'
+            className='border px-4 py-2 rounded-l w-64 text-md'
           />
           <button
             onClick={fetchIssuesByEnrollment}
@@ -79,7 +90,7 @@ function Home() {
 
         {issueResults.length > 0 && (
           <div className='mt-6 overflow-x-auto'>
-            <table className='min-w-full border border-gray-300'>
+            <table className='min-w-full border border-gray-300 text-sm'>
               <thead>
                 <tr className='bg-gray-100'>
                   <th className='px-4 py-2 border'>Issue ID</th>
@@ -87,7 +98,6 @@ function Home() {
                   <th className='px-4 py-2 border'>Condition</th>
                   <th className='px-4 py-2 border'>Location</th>
                   <th className='px-4 py-2 border'>Status</th>
-                  {/* Add more columns if needed */}
                 </tr>
               </thead>
               <tbody>
