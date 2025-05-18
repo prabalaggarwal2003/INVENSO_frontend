@@ -500,16 +500,17 @@ export default function Equipments() {
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1 ">condition</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1 ">Condition</label>
           <select
             name="condition"
             value={filters.condition}
             onChange={handleFilterChange}
             className="w-full p-2 border rounded text-sm"
           >
-            <option value="Good">Good</option>
-            <option value="New">New</option>
-            <option value="Needs_Repair">Needs_Repair</option>
+            <option value="">All Conditions</option>
+            {getUniqueValues('condition').map((condition, index) => (
+              <option key={index} value={condition}>{condition}</option>
+            ))}
           </select>
         </div>
         
@@ -619,13 +620,6 @@ export default function Equipments() {
           message.includes("success") ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
         }`}>
           {message}
-        </div>
-      )}
-
-      {showQR && formData.qrCode && (
-        <div className="mt-6 p-4 bg-white rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold mb-2">QR Code</h3>
-          <QRGenerator url={formData.qrCode} />
         </div>
       )}
     </div>
