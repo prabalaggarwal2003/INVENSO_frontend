@@ -58,9 +58,9 @@ export default function Equipments() {
       );
     }
     
-    if (filters.warranty) {
+    if (filters.condition) {
       filteredData = filteredData.filter(item => 
-        item.warranty?.toString().toLowerCase().includes(filters.warranty.toLowerCase())
+        item.condition?.toString().toLowerCase().includes(filters.condition.toLowerCase())
       );
     }
     
